@@ -22,6 +22,24 @@ server.get('/api/projects', async (req, res) => {
     }
 });
 
+server.get('/api/projects/:id', async (req, res) => {
+    try {
+        const project = await Projects.getProjectById(req.params.id);
+        res.status(200).json(project)
+    } catch(error) {
+        res.status(500).json({ message: "Error retrieving that project"})
+    }
+});
+
+server.post('/api/projects', async (req, res) => {
+    try {
+        const newProject = await Projects.addProject(req.body);
+        res.status(201).json(newProject);
+    } catch(error) {
+        res.status(500).json(error)
+    }
+})
+
 server.get('/api/actions', async (req, res) => {
     try {
         const actions = await Actions.getActions();
@@ -31,5 +49,15 @@ server.get('/api/actions', async (req, res) => {
     }
 
 });
+
+server.post('/api/actions', async (req, res) => {
+    try {
+        const newAction = await Actions.addAction(req.body);
+        res.status(201).json(newAction);
+    } catch(error) {
+        res.status(500).json(error);
+    }
+})
+
 
 module.exports = server;
